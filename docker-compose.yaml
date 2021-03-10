@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+
+  vtiger:
+    image: swimdhbw/vtiger:latest
+    container_name: vtiger
+    restart: unless-stopped
+    environment:
+      - VT_SITE_URL=http://localhost:8200
+      - MYSQL_HOST=mysql
+      - MYSQL_DATABASE=vtiger
+      - MYSQL_ROOT_PASSWORD=p4ssw0rd
+    ports:
+      - "8200:80"
+    volumes:
+      - ./app:/app
+      - ./vtiger:/var/lib/vtiger
+    links:
+      - mysql
+
+  mysql:
+    image: mariadb
+    container_name: vtigerdb
+    restart: unless-stopped  
+    environment:
+      - MYSQL_DATABASE=vtiger
+      - MYSQL_ROOT_PASSWORD=p4ssw0rd
+    volumes:
+      - ./mysql:/var/lib/mysql:rw
+
